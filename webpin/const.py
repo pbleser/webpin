@@ -5,9 +5,9 @@
 import re
 from webpin.layout import *
 
-VERSION = '1.2.2'
+VERSION = '1.2.3'
 # Software Portal URL:
-server = 'software.opensuse-community.org'
+server = 'webpinstant.com'
 baseurl = '/ws/searchservice/Search/'
 # Stable URL:
 # server = 'api.opensuse-community.org'
@@ -20,7 +20,7 @@ maxRedirects = 3
 mode = 'Simple'
 # used when the VERSION cannot be parsed from platform.dist()
 # nor /etc/SuSE-release
-defaultSuseVersion = '11.3'
+defaultSuseVersion = '12.2'
 # used for --latest
 latestSuseVersion = defaultSuseVersion
 
@@ -68,6 +68,9 @@ repoLayout = {
 # Map of (open)SUSE versions to dist identifiers
 # that must be used in the Package Search webservice URL:
 distVersionMap = {
+		'12.2': 'openSUSE_122',
+		'12.1': 'openSUSE_121',
+		'11.4': 'openSUSE_114',
 		'11.3': 'openSUSE_113',
 		'11.2': 'openSUSE_112',
 		'11.1': 'openSUSE_111',
