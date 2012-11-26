@@ -1,0 +1,24 @@
+#
+# Global configuration file for webpin
+# See "man 5 webpinrc" for reference
+#
+
+[General]
+mode = simple
+# distribution = latest
+
+[Output]
+color = on
+url = off
+arch = off
+verbose = on
+show_query_url = off
+
+[RPM]
+rpm = off
+# root = /var/build/chroot/11.3/x86_64
+
+[Network]
+timeout = 60
+# proxy = localhost:3128
+# proxyAuth = user:password

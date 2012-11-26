@@ -1,0 +1,222 @@
+.TH WEBPINRC 5
+.SH NAME
+webpinrc \- webpin (8) configuration file reference
+.SH DESCRIPTION
+webpinrc may be used to control all default options of webpin.
+
+By default, webpin looks for this file at the locations
+.BR /etc/webpinrc
+and
+.BR ~/.webpinrc
+.br
+However, you may override this by specifying the command line argument
+.BR \-\-config
+to webpin.
+
+.SH FORMAT
+The format of webpinrc is divided in sections.
+.br
+Comment lines start with a # and are ignored.
+.br
+A directive line has the format:
+
+option = value
+
+Each setting has a compiled in default which may be modified in the
+configuration file.
+
+.SH BOOLEAN OPTIONS
+The value for a boolean option may be set to
+
+.nf
+    yes | true | on
+or
+    no | false | off
+.fi
+
+Examples:
+.nf
+    some_boolean_option = on
+    some_other_boolean_option = false
+.fi
+
+.SH SECTIONS
+The configuration file is subdivided in the following sections,
+with each section being denoted as
+.BR [SECTION]
+in the configuration file:
+.TP
+.B [General]
+for general default options such as the query mode.
+.TP
+.B [Output]
+for configuring the output.
+.TP
+.B [RPM]
+for RPM support options.
+.TP
+.B [Network]
+for network related options.
+
+.SH GENERAL SECTION
+The [General] section supports the following options:
+
+.TP
+.B mode
+Valid values are
+.BR simple
+for the default query mode,
+.BR name
+for querying by package name,
+.BR content
+for querying by file names contained in packages.
+.TP
+.B distribution
+for the default openSUSE distribution version to query, with valid values being
+.BR 11.1 ,
+.BR 11.0 ,
+.BR 10.3 ,
+.BR factory ,
+and
+.BR latest .
+
+.SH OUTPUT SECTION
+The [Output] section contains the following boolean options:
+.TP
+.B color
+whether to enable ANSI escapes and colours (on) or not (off).
+.br
+This option is enabled by default.
+.TP
+.B theme
+selects the colour scheme to use for coloured output.
+.br
+Valid values are:
+.nf
+- light: for light backgrounds (e.g. white), this is the default theme,
+- dark: for dark backgrounds (e.g. black),
+- none: disables colouring (same as color=no)
+.fi
+.TP
+.B url
+whether to display the repository URLs as well (repository names are
+always shown).
+.br
+This option is disabled by default.
+.TP
+.B arch
+whether to display package architecture information (on) or
+not (off).
+.br
+This option is disabled by default.
+.TP
+.B verbose
+whether to display progress information (on) or not (off).
+.br
+You might want to disable that option on dumb terminals or
+when piping the output (e.g. to a pager like less).
+.br
+This option is enabled by default.
+.TP
+.B show_query_url
+whether to display the URL of the query that is being sent to
+the openSUSE Package Search service (on) or not (off).
+.br
+This option is enabled by default.
+
+.SH RPM SECTION
+The [RPM] section controls options regarding the local RPM database
+support of webpin.
+.TP
+.B rpm
+whether to enable local RPM database comparison for package results
+returned by the Package Search webservice.
+.br
+When enabled, webpin will query your local RPM database to display
+whether the packages are installed on your system or not, as well
+as comparing the results with your local system (showing whether the
+results are newer, older or the same version as yours).
+.br
+This option is disabled by default.
+.TP
+.B root
+sets the root directory for accessing the RPM database.
+.br
+This option is useful if you want to compare results with packages
+that are installed on a chrooted system.
+.br
+When not set, this option defaults to / and uses the RPM database
+of the system you're running webpin on.
+
+.SH NETWORK SECTION
+The [Network] section controls options regarding network operations
+when querying the openSUSE Package Search service.
+.TP
+.B timeout
+sets the timeout in seconds for contacting, sending the query and
+reading the response.
+.br
+The default value is set in /etc/webpinrc
+.TP
+.B proxy
+sets the HTTP proxy to use for outgoing Package Search service requests,
+using the format
+.B host:port
+
+Examples:
+.br
+proxy = myproxy.lan:8080
+.br
+proxy = 127.0.0.1:3128
+.TP
+.B proxy_auth
+when set, enables proxy authentication (using the Basic Authentication scheme)
+and defines the credentials (in clear text), using the format
+.B username:password
+
+Example:
+.br
+proxy_auth = joe:n8Aiklm
+
+Note: to secure your proxy authentication password, make sure to make the
+configuration file only readable for your user, with the following command:
+.br
+chmod 600 ~/.webpinrc
+
+.SH EXAMPLE
+.PP
+.nf
+[General]
+mode = simple
+distribution = factory
+
+[Output]
+color = on
+theme = dark
+url = on
+arch = on
+verbose = off
+show_query_url = on
+
+[RPM]
+rpm = on
+root = /var/build/chroot/11.1/x86_64
+
+[Network]
+timeout = 120
+proxy = proxyhost:3128
+proxy_auth = john:doe
+.fi
+
+.SH FILES
+.PP
+.nf
+   /etc/webpinrc
+   ~/.webpinrc
+.fi
+
+.SH "SEE ALSO"
+.BR webpin (8)
+
+.SH AUTHOR
+Written by Pascal Bleser <pascal.bleser@opensuse.org>

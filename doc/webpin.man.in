@@ -1,0 +1,117 @@
+.SH "PROXY SUPPORT"
+Starting with version 0.7, webpin is able to use an HTTP proxy to send out
+its requests to the Package Search web service.
+
+Note that as of this version, only the Basic Authentication is supported,
+and only with HTTP proxies (not HTTPS).
+
+To use a proxy, either pass the --proxy=hostname:port option to the
+webpin command line, or add the following line in the [Network] section
+of the configuration file:
+.nf
+    [Network]
+    proxy = hostname:port
+.fi
+
+To also enable authentication, pass the --proxy-auth=username:password
+option to the webpin command line, or add the following line in the
+[Network] section of the configuration file:
+.nf
+    [Network]
+    proxy_auth = username:password
+.fi
+
+Note that the password must be specified in clear text, and that specifying
+proxy_auth or --proxy-auth has no influence unless passing --proxy (or setting
+proxy in the configuration) as well.
+
+Webpin also honors the
+.B http_proxy
+environment variable, that must have the format
+.B host:port
+or
+.B http://host:port
+.
+
+.SH "RPM DATABASE INTERACTION"
+When passing the --rpm option, webpin compares search results with your
+local RPM database (or a database of a chroot, using the --rpm-root option)
+and shows whether the search results are installed on your local system
+or not, as well as comparing the versions (only versions, not releases
+nor epoch as those values are not provided by the Package Search service).
+.br
+Note that those options and features are only available when the package
+rpm-python is installed on your system.
+
+.SH "ZYPPER SUPPORT"
+When the following criteria are met, webpin enables support for zypper and
+shows whether the package repositories that contain search matches are
+currently available in your zypper configuration (or not, or disabled):
+.nf
+- /usr/bin/zypper is available
+- webpin is running as root (unfortunately, this is currently required to run `zypper sl`)
+- the option --zypper has been passed to webpin on the command line, or
+  the option `zypper = yes` is specified in [Zypper] section of the the configuration file
+.fi
+
+.SH "SMART SUPPORT"
+Similarily to the zypper option, webpin supports querying the list of
+channels configured in smart and displays whether package repositories
+that contain search matches are currently avalable in your channel
+list (or not, or disabled).
+
+Smart support is only available when:
+.nf
+- smart is installed
+- the option --smart has been passed to webpin on the command line, or
+  the option `smart = yes` is specified in the [Smart] section of the configuration file
+.fi
+
+.SH "EXIT STATUS"
+.TP
+.B 0
+Successful program execution and webpin found matches for
+the specified query.
+.TP
+.B 1
+Successful program execution but failed to find any matches
+for the specified query.
+.TP
+.B 2
+The openSUSE Package Search server replied with an error.
+.TP
+.B 3
+A network error occured, most likely a timeout.
+.TP
+.B 4
+Missing search term parameter.
+.TP
+.B 5
+Specified too many search terms (only supports one).
+.TP
+.B 6
+Specified an invalid openSUSE distribution version.
+.TP
+.B 7
+Configuration file error.
+.TP
+.B 8
+Tried to enable an unsupported option.
+.TP
+.B 9
+Error running an external process.
+
+.SH "SEE ALSO"
+.BR webpinrc (5)
+
+.SH AUTHOR
+Written by Pascal Bleser <pascal.bleser@opensuse.org>.
+.SH "REPORTING BUGS"
+Report bugs to <pascal.bleser@opensuse.org>.
+.SH COPYRIGHT
+Copyright \(co 2007-2009 Pascal Bleser
+.br
+This is free software.  You may redistribute copies of it under the terms of
+the GNU General Public License version 2 <http://www.gnu.org/licenses/gpl-2.0.txt>
+There is NO WARRANTY, to the extent permitted by law.
+
