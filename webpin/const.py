@@ -5,7 +5,7 @@
 import re
 from webpin.layout import *
 
-VERSION = '1.2.3'
+VERSION = '1.2.4'
 # Software Portal URL:
 server = 'webpinstant.com'
 baseurl = '/ws/searchservice/Search/'
